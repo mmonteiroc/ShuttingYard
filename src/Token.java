@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Token {
     enum Toktype {
         NUMBER, OP, PAREN
@@ -58,42 +62,30 @@ public class Token {
 
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
-        String expresion = expr;
-        Token[]devolver = new Token[0];
-        for (int i = 0; i < expresion.length(); i++) {
-            if (esNumero(expresion.charAt(i))){
-                int n = sacarNumero(expresion, i);
-                devolver = añadirArray(devolver,tokNumber(n));
+        List<Token> dev = new ArrayList<>();
+
+        for (int i = 0; i < expr.length(); i++) {
+            if (Character.isDigit(expr.charAt(i))){
+                int n = sacarNumero(expr, i);
+                dev.add(tokNumber(n));
                 StringBuilder s = new StringBuilder();
                 s.append(n);
                 i+=s.length();
                 i--;
                 continue;
-            }else if (esOp(expresion.charAt(i))){
-                devolver = añadirArray(devolver, tokOp(expresion.charAt(i)));
-            }else if (esParen(expresion.charAt(i))){
-                devolver = añadirArray(devolver,tokParen(expresion.charAt(i)));
+            }else if (esOp(expr.charAt(i))){
+                dev.add(tokOp(expr.charAt(i)));
+
+            }else if (esParen(expr.charAt(i))){
+                dev.add(tokParen(expr.charAt(i)));
             }
         }
-        return devolver;
+
+
+        return dev.toArray(new Token[0]);
     }
 
-    /**
-     * @param t Array actual de tokens
-     * @param s Token a añadir
-     * @return Array con todos los token
-     *
-     * Esta funcion simple lo que hace es generar
-     * un nuevo array de tokens para añadir el nuevo
-     */
-    static private Token[] añadirArray(Token[] t, Token s){
-        Token[] dev = new Token[t.length+1];
-        for (int i = 0; i < t.length; i++) {
-            dev[i] = t[i];
-        }
-        dev[t.length]= s;
-        return dev;
-    }
+
 
     static private int sacarNumero(String s, int i){
         int dev =0;
@@ -101,7 +93,7 @@ public class Token {
         for (int j = i; j < s.length(); j++) {
             num += s.charAt(j);
             if (j+1==s.length())break;
-            if (esNumero(s.charAt(j+1))) continue;
+            if (Character.isDigit(s.charAt(j+1))) continue;
             else if (esOp(s.charAt(j+1))|esParen(s.charAt(j+1)) | s.charAt(j+1)==' ') break;
         }
 
@@ -130,24 +122,6 @@ public class Token {
                 return false;
         }
     }
-    static private boolean esNumero(char c){
-        switch (c){
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case '0':
-                return true;
-            default:
-                return false;
-        }
-    }
-
 
     public Toktype getTtype() {
         return ttype;

@@ -1,5 +1,4 @@
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 
 public class Evaluator {
@@ -11,11 +10,68 @@ public class Evaluator {
         // Efectua el procediment per convertir la llista de tokens en notació RPN
         // Finalment, crida a calcRPN amb la nova llista de tokens i torna el resultat
 
+        Deque<Token> pila = new LinkedList<>();
+        // PRECEDENCIAS
+        // / *  1       <-- Division y multiplicacion
+        // + -  2       <-- Suma y resta
 
 
 
-        return 0;
+        List<Token> output = new ArrayList<>();
+
+        int cont =0;
+        for (int i = 0; i < tokens.length; i++) {
+
+
+            if (tokens[i].getTtype()==Token.Toktype.NUMBER){
+                output.add(tokens[i]);
+            }else {
+
+                Iterator<Token> ItPila = pila.iterator();
+                if (tokens[i].getTk()=='+'|tokens[i].getTk()=='-'){
+                    // Hay que sacar hasta que no quede mas o haya parentesis
+                    while (ItPila.hasNext()){
+
+                        Token prova = ItPila.next();
+                        if (prova.getTtype()== Token.Toktype.PAREN){
+                            break;
+                        }
+
+                        output.add(prova);
+                        cont++;
+                    }
+                }else if (tokens[i].getTk()=='*'|tokens[i].getTk()=='/'){
+                    // Hay que sacar hasta que haya un +, - o parentesis
+                    while (ItPila.hasNext()){
+                        Token prova = ItPila.next();
+                        if (prova.getTk()=='+'|prova.getTk()=='-'|prova.getTk()=='('){
+                            break;
+                        }
+                        output.add(prova);
+                        cont++;
+
+                    }
+                }
+                for (int j = 0; j < cont; j++) {
+                    pila.poll();
+                }
+                cont=0;
+
+                pila.push(tokens[i]);
+            }
+        }
+
+        Iterator<Token> pilaIterator = pila.iterator();
+
+        while (pilaIterator.hasNext()){
+            output.add(pilaIterator.next());
+        }
+
+        Token[] toks = output.toArray(new Token[0]);
+
+        return calcRPN(toks);
     }
+
 
 
     //Polaca inversa recibimos
