@@ -1,9 +1,6 @@
 import java.util.*;
 
-
 public class Evaluator {
-
-
     public static int calculate(String expr) {
         // Convertim l'string d'entrada en una llista de tokens
         Token[] tokens = Token.getTokens(expr);
@@ -11,17 +8,11 @@ public class Evaluator {
         // Finalment, crida a calcRPN amb la nova llista de tokens i torna el resultat
 
         Deque<Token> pila = new LinkedList<>();
-        // PRECEDENCIAS
-        // / *  1       <-- Division y multiplicacion
-        // + -  2       <-- Suma y resta
-
-
 
         List<Token> output = new ArrayList<>();
 
         int cont =0;
         for (int i = 0; i < tokens.length; i++) {
-
 
             if (tokens[i].getTtype()==Token.Toktype.NUMBER){
                 output.add(tokens[i]);
@@ -45,7 +36,6 @@ public class Evaluator {
                     pila.poll();
                 }
                 cont=0;
-
 
             }else{
                 Iterator<Token> ItPila = pila.iterator();
@@ -129,6 +119,4 @@ public class Evaluator {
         }
         return dev;
     }
-
-
 }
