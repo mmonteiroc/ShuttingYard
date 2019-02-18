@@ -25,9 +25,31 @@ public class Evaluator {
 
             if (tokens[i].getTtype()==Token.Toktype.NUMBER){
                 output.add(tokens[i]);
-            }else {
-
+            }else if (tokens[i].getTk()==')'){
                 Iterator<Token> ItPila = pila.iterator();
+
+
+                while (ItPila.hasNext()){
+
+                    Token t = ItPila.next();
+
+                    if (t.getTk()=='('){
+                        break;
+                    }else {
+                        output.add(t);
+                        cont++;
+                    }
+                }
+
+                for (int j = 0; j <= cont; j++) {
+                    pila.poll();
+                }
+                cont=0;
+
+
+            }else{
+                Iterator<Token> ItPila = pila.iterator();
+
                 if (tokens[i].getTk()=='+'|tokens[i].getTk()=='-'){
                     // Hay que sacar hasta que no quede mas o haya parentesis
                     while (ItPila.hasNext()){
