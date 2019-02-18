@@ -59,7 +59,6 @@ public class Token {
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
         String expresion = expr;
-
         Token[]devolver = new Token[0];
         for (int i = 0; i < expresion.length(); i++) {
             if (esNumero(expresion.charAt(i))){
