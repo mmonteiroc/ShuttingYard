@@ -63,7 +63,20 @@ public class Evaluator {
                         cont++;
 
                     }
+                }else if (tokens[i].getTk()=='^'){
+                    // Hay que sacar hasta que haya un +, -, *, / o parentesis
+
+                    while (ItPila.hasNext()){
+                        Token prova = ItPila.next();
+                        if (prova.getTk()=='+'|prova.getTk()=='-'|prova.getTk()=='('|prova.getTk()=='*'|prova.getTk()=='/'){
+                            break;
+                        }
+                        output.add(prova);
+                        cont++;
+                    }
+
                 }
+
                 for (int j = 0; j < cont; j++) {
                     pila.poll();
                 }
@@ -94,10 +107,11 @@ public class Evaluator {
             if (list[i].getTtype()== Token.Toktype.NUMBER){
                 pila.push(list[i]);
             }else if (list[i].getTtype()== Token.Toktype.OP){
+                int resultado;
                 int n2 = pila.poll().getValue();
                 int n1 = pila.poll().getValue();
                 char op = list[i].getTk();
-                int resultado = operamos(n1,n2,op);
+                resultado =(int) operamos(n1,n2,op);
                 pila.push(Token.tokNumber(resultado));
             }
 
@@ -106,8 +120,8 @@ public class Evaluator {
         return pila.poll().getValue();
     }
 
-    static private int operamos(int n, int n2, char op){
-        int dev =0;
+    static private double operamos(int n, int n2, char op){
+        double dev =0;
         if (op=='+'){
             dev = n + n2;
         }else if (op=='-'){
@@ -116,6 +130,8 @@ public class Evaluator {
             dev = n * n2;
         }else if (op=='/'){
             dev = n / n2;
+        }else  if (op=='^'){
+            dev = Math.pow(n,n2);
         }
         return dev;
     }

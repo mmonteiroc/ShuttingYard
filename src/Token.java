@@ -108,6 +108,7 @@ public class Token {
             case '-':
             case '*':
             case '/':
+            case '^':
                 return true;
             default:
                 return false;
@@ -139,5 +140,18 @@ public class Token {
     }
     public void setTk(char tk) {
         //this.tk = tk;
+    }
+
+
+    private String espaciado(String s){
+        StringBuilder dev = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))){
+                dev.append(s.charAt(i));
+            }else {
+                dev.append(" " + s.charAt(i) + " ");
+            }
+        }
+        return dev.toString();
     }
 }
