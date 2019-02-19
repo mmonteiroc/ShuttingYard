@@ -63,13 +63,15 @@ public class EvaluatorTest {
 
     @Test
     public void tests_opUnari() {
-        //assertEquals(-6, Evaluator.calculate("-(1+5)"));
-        //assertEquals(1, Evaluator.calculate("-8+9"));
-        //assertEquals(-7, Evaluator.calculate("-1*7"));
+        assertEquals(-6, Evaluator.calculate("-(1+5)"));
+        assertEquals(1, Evaluator.calculate("-8+9"));
+        assertEquals(-7, Evaluator.calculate("-1*7"));
         assertEquals(63, Evaluator.calculate("-9*-7"));
-        //assertEquals(7, Evaluator.calculate("9+(-1*2)"));
-        //assertEquals(-1976, Evaluator.calculate("-7*(-9+65)*5-(2+6)-(-1-1)*2*-2"));
-        //assertEquals(-587, Evaluator.calculate("95-5*(-2+7)-9*(2+99)-(-1+1)*-7+96+43+23-(-99+9)"));
+        assertEquals(7, Evaluator.calculate("9+(-1*2)"));
+
+        assertEquals(-1976, Evaluator.calculate("-7*(-9+65)*5-(2+6)-(-1-1)*2*-2"));
+        assertEquals(-587, Evaluator.calculate("95-5*(-2+7)-9*(2+99)-(-1+1)*-7+96+43+23-(-99+9)"));
+        assertEquals(2,Evaluator.calculate("4+-2"));
 
     }
 
@@ -87,8 +89,8 @@ public class EvaluatorTest {
     public void tests_potencia() {
         assertEquals(8, Evaluator.calculate("2^3"));
         assertEquals(81, Evaluator.calculate("3^(3+1)"));
-        //assertEquals(-2, Evaluator.calculate("-2^1"));
-        //assertEquals(-135, Evaluator.calculate("8+5-7^2-98-(2-1)^(5-2)"));
-        //assertEquals(-264589, Evaluator.calculate("2+3+2+1^4-2*11^3-2^(9*6-50)+12^2+9^2-(-1+5)^(2*4-(1-2))"));
+        assertEquals(-2, Evaluator.calculate("-2^1"));
+        assertEquals(-135, Evaluator.calculate("8+5-7^2-98-(2-1)^(5-2)"));
+        assertEquals(-264589, Evaluator.calculate("2+3+2+1^4-2*11^3-2^(9*6-50)+12^2+9^2-(-1+5)^(2*4-(1-2))"));
     }
 }

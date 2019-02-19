@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,9 +43,7 @@ public class Token {
 
     // Mostra un token (conversió a String)
     public String toString() {
-        return "token de tipo : "+ ttype +"\n"+
-                "Token value : " + value +"\n"+
-                "Token tk : " + tk;
+        return " "+tk+" "+value;
     }
 
     // Mètode equals. Comprova si dos objectes Token són iguals
@@ -63,43 +62,44 @@ public class Token {
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
         List<Token> dev = new ArrayList<>();
+        String[]  partes = espaciado(expr).split("\\s+");
 
-        for (int i = 0; i < expr.length(); i++) {
-            if (Character.isDigit(expr.charAt(i))){
-                int n = sacarNumero(expr, i);
-                dev.add(tokNumber(n));
-                StringBuilder s = new StringBuilder();
-                s.append(n);
-                i+=s.length();
-                i--;
-                continue;
-            }else if (esOp(expr.charAt(i))){
-                dev.add(tokOp(expr.charAt(i)));
+        boolean encontradoOp = true;
 
-            }else if (esParen(expr.charAt(i))){
-                dev.add(tokParen(expr.charAt(i)));
+        for (int i = 0; i < partes.length; i++) {
+            String part = partes[i];
+            if (part.length()!=0){
+                if (part.contains("-") && encontradoOp){
+                    dev.add(tokNumber(-1));
+                    dev.add(tokOp('*'));
+                    encontradoOp=false;
+                }else if (esOp(part.charAt(0))){
+                    encontradoOp = true;
+                    dev.add(tokOp(part.charAt(0)));
+                }else if (esParenIZQ(part.charAt(0))) {
+                    dev.add(tokParen(part.charAt(0)));
+                    encontradoOp=true;
+                } else if (esParenDCH(part.charAt(0))){
+                    dev.add(tokParen(part.charAt(0)));
+                    encontradoOp=false;
+                }else if (Character.isDigit(part.charAt(0))){
+                    dev.add(tokNumber(Integer.parseInt(part)));
+                    encontradoOp=false;
+                }
             }
         }
 
+        Token[] toks = dev.toArray(new Token[0]);
 
-        return dev.toArray(new Token[0]);
+
+
+
+        return toks;
     }
 
 
 
-    static private int sacarNumero(String s, int i){
-        int dev =0;
-        String num="";
-        for (int j = i; j < s.length(); j++) {
-            num += s.charAt(j);
-            if (j+1==s.length())break;
-            if (Character.isDigit(s.charAt(j+1))) continue;
-            else if (esOp(s.charAt(j+1))|esParen(s.charAt(j+1)) | s.charAt(j+1)==' ') break;
-        }
 
-        dev = Integer.parseInt(num);
-        return dev;
-    }
 
 
     static private boolean esOp(char c){
@@ -114,14 +114,19 @@ public class Token {
                 return false;
         }
     }
-    static private boolean esParen(char c){
+    static private boolean esParenDCH(char c){
         switch (c){
-            case '(':
             case ')':
                 return true;
             default:
                 return false;
         }
+    }
+    static private boolean esParenIZQ(char c){
+        if (c == '('){
+            return true;
+        }
+        return false;
     }
 
     public Toktype getTtype() {
@@ -143,7 +148,7 @@ public class Token {
     }
 
 
-    private String espaciado(String s){
+    static private String espaciado(String s){
         StringBuilder dev = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             if (Character.isDigit(s.charAt(i))){
