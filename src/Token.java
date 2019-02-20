@@ -91,8 +91,7 @@ public class Token {
 
         Token[] toks = dev.toArray(new Token[0]);
 
-
-
+        System.out.println(Arrays.toString(toks));
 
         return toks;
     }
