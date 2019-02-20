@@ -1,23 +1,28 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Token {
     enum Toktype {
         NUMBER, OP, PAREN
     }
-
-    // Pensa a implementar els "getters" d'aquests atributs
     private Toktype ttype;
     private int value;
     private char tk;
 
-    // Constructor privat. Evita que es puguin construir objectes Token externament
+    // Constructor privado para evitar
+    // poder instanciar un nuevo token fuera de esta clase
     private Token() {
     }
 
-    // Torna un token de tipus "NUMBER"
+    /**
+     * @param value valor del token que crearemos
+     * @return devolvemos el token ya creado
+     *
+     * Este metodo lo que hace es recivir un valor el cual sera un numero integro.
+     * Despues instancia un nuevo token, y asignamos un tipo de token "Number"
+     * Asignamos el valor que le corresponde y retornamos dicho token
+     */
     static Token tokNumber(int value) {
         Token dev = new Token();
         dev.ttype = Toktype.NUMBER;
@@ -25,7 +30,15 @@ public class Token {
         return dev;
     }
 
-    // Torna un token de tipus "OP"
+    /**
+     * @param c Operador de dicho token
+     * @return Retornamos un token con sus cracteristicas que le corresponden
+     *
+     * Lo que hacemos es recibir el caracter del token que le corresponde
+     * Ex: + - * / ^
+     * Despues instanciamos un nuevo token y le asignamos los
+     * valores que le pertañen
+     */
     static Token tokOp(char c) {
         Token dev = new Token();
         dev.ttype = Toktype.OP;
@@ -33,12 +46,19 @@ public class Token {
         return dev;
     }
 
-    // Torna un token de tipus "PAREN"
+    /**
+     * @param c Parentesis de dicho operador
+     * @return Devolvemos el token una vez creado
+     *
+     * Recibimos el parentesis que queremos crear en token
+     * Añadimos a dicho token todos
+     * sus valores necesarios y lo retornamos
+     */
     static Token tokParen(char c) {
-        Token dev = new Token();
-        dev.ttype = Toktype.PAREN;
-        dev.tk = c;
-        return dev;
+        Token devolver = new Token();
+        devolver.ttype = Toktype.PAREN;
+        devolver.tk = c;
+        return devolver;
     }
 
     // Mostra un token (conversió a String)
@@ -48,12 +68,9 @@ public class Token {
 
     // Mètode equals. Comprova si dos objectes Token són iguals
     public boolean equals(Object o) {
-        Token tok = (Token) o;
         if (this.tk == ((Token) o).tk){
             if(this.value == ((Token) o).value){
-                if (this.ttype == ((Token) o).ttype){
-                    return true;
-                }
+                return this.ttype == ((Token) o).ttype;
             }
         }
         return false;
@@ -65,41 +82,31 @@ public class Token {
         String[]  partes = espaciado(expr).split("\\s+");
 
         boolean encontradoOp = true;
-
-        for (int i = 0; i < partes.length; i++) {
-            String part = partes[i];
-            if (part.length()!=0){
-                if (part.contains("-") && encontradoOp){
+        for (String part : partes) {
+            if (part.length() != 0) {
+                if (part.contains("-") && encontradoOp) {
                     dev.add(tokNumber(-1));
                     dev.add(tokOp('*'));
-                    encontradoOp=false;
-                }else if (esOp(part.charAt(0))){
+                    encontradoOp = false;
+                } else if (esOp(part.charAt(0))) {
                     encontradoOp = true;
                     dev.add(tokOp(part.charAt(0)));
-                }else if (esParenIZQ(part.charAt(0))) {
+                } else if (esParenIZQ(part.charAt(0))) {
                     dev.add(tokParen(part.charAt(0)));
-                    encontradoOp=true;
-                } else if (esParenDCH(part.charAt(0))){
+                    encontradoOp = true;
+                } else if (esParenDCH(part.charAt(0))) {
                     dev.add(tokParen(part.charAt(0)));
-                    encontradoOp=false;
-                }else if (Character.isDigit(part.charAt(0))){
+                    encontradoOp = false;
+                } else if (Character.isDigit(part.charAt(0))) {
                     dev.add(tokNumber(Integer.parseInt(part)));
-                    encontradoOp=false;
+                    encontradoOp = false;
                 }
             }
         }
-
         Token[] toks = dev.toArray(new Token[0]);
-
         System.out.println(Arrays.toString(toks));
-
         return toks;
     }
-
-
-
-
-
 
     static private boolean esOp(char c){
         switch (c){
@@ -113,20 +120,8 @@ public class Token {
                 return false;
         }
     }
-    static private boolean esParenDCH(char c){
-        switch (c){
-            case ')':
-                return true;
-            default:
-                return false;
-        }
-    }
-    static private boolean esParenIZQ(char c){
-        if (c == '('){
-            return true;
-        }
-        return false;
-    }
+    static private boolean esParenDCH(char c){ return c == ')'; }
+    static private boolean esParenIZQ(char c){ return c == '('; }
 
     public Toktype getTtype() {
         return ttype;
@@ -135,17 +130,6 @@ public class Token {
         return value;
     }
     public char getTk() { return tk; }
-
-    public void setTtype(Toktype ttype) {
-        //this.ttype = ttype;
-    }
-    public void setValue(int value) {
-        //this.value = value;
-    }
-    public void setTk(char tk) {
-        //this.tk = tk;
-    }
-
 
     static private String espaciado(String s){
         StringBuilder dev = new StringBuilder();
