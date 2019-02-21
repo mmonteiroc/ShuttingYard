@@ -57,7 +57,17 @@ public class Evaluator {
                         output.add(prova);
                         cont++;
                     }
+                }else if (tokens[i].getTkOp()=='_'){
+                    // Paramos cuando encontremos cualquier cosa que no es un _
+                    while (ItPila.hasNext()){
+                        Token temp = ItPila.next();
+                        if (temp.getTkOp()!='_') break;
+                        output.add(temp);
+                        cont++;
+                    }
                 }
+
+
                 for (int j = 0; j < cont; j++) {
                     pila.poll();
                 }
@@ -79,6 +89,15 @@ public class Evaluator {
             if (list[i].getTokType()== Token.Toktype.NUMBER){
                 pila.push(list[i]);
             }else if (list[i].getTokType()== Token.Toktype.OP){
+
+                if (list[i].getTkOp()=='_'){
+                int resultado;
+                    int n2 = pila.poll().getValue();
+                    resultado = n2*(-1);
+                    pila.push(Token.tokNumber(resultado));
+                    continue;
+                }
+
                 int resultado;
                 int n2 = pila.poll().getValue();
                 int n1 = pila.poll().getValue();

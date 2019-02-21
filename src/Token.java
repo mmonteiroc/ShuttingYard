@@ -88,8 +88,7 @@ public class Token {
         for (String part : partes) {
             if (part.length() != 0) {
                 if (part.contains("-") && encontradoOperador) {
-                    devolver.add(tokNumber(-1));
-                    devolver.add(tokOp('*'));
+                    devolver.add(tokOp('_'));
                     encontradoOperador = false;
                 } else if (esOp(part.charAt(0))) {
                     encontradoOperador = true;
