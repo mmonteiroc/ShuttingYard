@@ -138,6 +138,7 @@ public class Token {
     }
     public char getTkOp() { return tkOp; }
 
+
     /**
      * @param expresion Espresion que nos pasan
      * @return Expresion que retornamos

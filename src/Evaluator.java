@@ -98,6 +98,7 @@ public class Evaluator {
                     continue;
                 }
 
+
                 int resultado;
                 int n2 = pila.poll().getValue();
                 int n1 = pila.poll().getValue();
