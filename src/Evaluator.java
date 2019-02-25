@@ -29,38 +29,42 @@ public class Evaluator {
                 Iterator<Token> ItPila = pila.iterator();
                 if (tokens[i].getTkOp()=='+'|tokens[i].getTkOp()=='-'){
                     // Hay que sacar hasta que no quede mas o haya parentesis
+                    Token temp;
                     while (ItPila.hasNext()){
-                        Token prova = ItPila.next();
-                        if (prova.getTokType()== Token.Toktype.PAREN){
+                        temp = ItPila.next();
+                        if (temp.getTokType()== Token.Toktype.PAREN){
                             break;
                         }
-                        output.add(prova);
+                        output.add(temp);
                         cont++;
                     }
                 }else if (tokens[i].getTkOp()=='*'|tokens[i].getTkOp()=='/'){
                     // Hay que sacar hasta que haya un +, - o parentesis
+                    Token temp;
                     while (ItPila.hasNext()){
-                        Token prova = ItPila.next();
-                        if (prova.getTkOp()=='+'|prova.getTkOp()=='-'|prova.getTkOp()=='('){
+                        temp = ItPila.next();
+                        if (temp.getTkOp()=='+'|temp.getTkOp()=='-'|temp.getTkOp()=='('){
                             break;
                         }
-                        output.add(prova);
+                        output.add(temp);
                         cont++;
                     }
                 }else if (tokens[i].getTkOp()=='^'){
                     // Hay que sacar hasta que haya un +, -, *, / o parentesis
+                    Token temp;
                     while (ItPila.hasNext()){
-                        Token prova = ItPila.next();
-                        if (prova.getTkOp()=='+'|prova.getTkOp()=='-'|prova.getTkOp()=='('|prova.getTkOp()=='*'|prova.getTkOp()=='/'){
+                        temp = ItPila.next();
+                        if (temp.getTkOp()=='+'|temp.getTkOp()=='-'|temp.getTkOp()=='('|temp.getTkOp()=='*'|temp.getTkOp()=='/'){
                             break;
                         }
-                        output.add(prova);
+                        output.add(temp);
                         cont++;
                     }
                 }else if (tokens[i].getTkOp()=='_'){
                     // Paramos cuando encontremos cualquier cosa que no es un _
+                    Token temp;
                     while (ItPila.hasNext()){
-                        Token temp = ItPila.next();
+                        temp = ItPila.next();
                         if (temp.getTkOp()!='_') break;
                         output.add(temp);
                         cont++;
@@ -83,6 +87,20 @@ public class Evaluator {
         return calcRPN(toks);
     }
 
+    /**
+     * @param list lista de tokens ordenados listos para calcular
+     * @return retornamos el restultad de toda la operación matematica
+     *
+     * Este metodo lo que hace es ir posicion a posicion
+     * de nuestra lista leyendo cada token.
+     * Si ese token es un numero lo añadimos a la pila, si no lo que
+     * hacemos es (dependiendo del operador que sea)
+     * sacamos 1 o 2 numeros de la pila, operamos con ellos dependiendo del
+     * operador y añadimos el resultado a la pila.
+     * Esto hasta que no nos queden mas tokens a la lista y
+     * entonces sacaremos el ultimo valor que tendremos en la pila
+     * sera el resultado a retornar
+     */
     public static int calcRPN(Token[] list) {
         Deque<Token> pila = new LinkedList<Token> ();
         for (int i = 0; i < list.length; i++) {
