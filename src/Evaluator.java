@@ -1,8 +1,21 @@
 import java.util.*;
 public class Evaluator {
+    /**
+     * @param expr Conjunto de tokens que recibimos desordenados
+     * @return Resultado de esa operacion matematica
+     *
+     * Este metodo lo que hacemos es ordenar la expresion que recibimos en anotación
+     * "Polaca inversa"
+     *
+     * Para ello, lo que hacemos es ir token a token leyendo que tipo es,
+     * si es un numero, lo añadimos a la lista output, si es un operador lo que hacemos
+     * es añadirlo a la pila temporal quitando de la pila los que operadores que tengan menos
+     * precedencia y añadiendolos a output, una vez hemos acabado y los tenemos ordenados lo
+     * que hacemos es pasarlos al metodo CalcRPN el cual se encarga de retornarnos
+     * el resultado de dicha operación matematica.
+     */
     public static int calculate(String expr) {
         Token[] tokens = Token.getTokens(expr);
-
         Deque<Token> pila = new LinkedList<>();
         List<Token> output = new ArrayList<>();
 
@@ -70,8 +83,6 @@ public class Evaluator {
                         cont++;
                     }
                 }
-
-
                 for (int j = 0; j < cont; j++) {
                     pila.poll();
                 }
